@@ -8,4 +8,4 @@
 /dataSources.local.xml
 
 
-src/main/resources/**/input
+/src/main/resources/day1/input
