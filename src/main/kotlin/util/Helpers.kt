@@ -112,6 +112,9 @@ class Helpers {
             return rec(0, 1, digits.reversed())
         }
 
+        fun Long.toDigits(): List<Int> {
+            return this.toString().map { it.digitToInt() }
+        }
         fun <T> List<List<T>>.toGrid(): Grid<T> {
             return this.mapIndexed { y, line ->
                 line.mapIndexed { x, t ->
