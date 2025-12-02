@@ -14,4 +14,8 @@ class GiftShopTest {
         assertEquals(1227775554L, sample1.star1())
     }
 
+    @Test
+    fun sample1star2() {
+        assertEquals(4174379265L, sample1.star2())
+    }
 }

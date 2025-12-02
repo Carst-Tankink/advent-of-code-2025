@@ -13,22 +13,24 @@ class GiftShop(fileName: String?) : Solution<List<Pair<Long, Long>>, Long>(fileN
 
     override fun solve1(data: List<List<Pair<Long, Long>>>): Long {
         return data.first().sumOf { (lower, upper) ->
-            (lower..upper).filter { number -> isInvalid(number) }.sum()
-        }
-    }
-
-    private fun isInvalid(number: Long): Boolean {
-        val digits: List<Int> = number.toDigits()
-        return if (digits.size % 2 == 0) {
-            val first = digits.take(digits.size / 2)
-            val second = digits.drop(digits.size / 2)
-            first.size == second.size && first.zip(second).all { pair -> pair.first == pair.second }
-        } else {
-            false
+            (lower..upper).filter { number ->
+                val digits = number.toDigits()
+                digits.size % 2 == 0 && isInvalid(digits, digits.size / 2)
+            }.sum()
         }
     }
 
     override fun solve2(data: List<List<Pair<Long, Long>>>): Long {
-        TODO("Not yet implemented")
+        return data.first().sumOf { (lower, upper) ->
+            (lower..upper).filter { number ->
+                val digits = number.toDigits()
+                digits.size > 1 && (1..digits.size / 2).any { isInvalid(digits, it) }
+            }.sum()
+        }
+    }
+
+    private fun isInvalid(digits: List<Int>, groupSize: Int): Boolean {
+        val chunks = digits.chunked(groupSize)
+        return chunks.zipWithNext().all { (x, y) -> x == y }
     }
 }
