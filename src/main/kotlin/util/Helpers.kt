@@ -160,6 +160,14 @@ class Helpers {
 
             return rec(1, power)
         }
+
+        fun pow(base: Long, power: Long): Long {
+            tailrec fun rec(acc: Long, remaining: Long): Long {
+                return if (remaining == 0L) acc else rec(acc * base, remaining - 1)
+            }
+
+            return rec(1, power)
+        }
     }
 }
 
