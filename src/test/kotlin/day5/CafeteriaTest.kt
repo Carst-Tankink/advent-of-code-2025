@@ -11,4 +11,9 @@ class CafeteriaTest {
     fun sample1star1() {
         assertEquals(3, sample1.star1())
     }
+
+    @Test
+    fun sample1star2() {
+        assertEquals(14, sample1.star2())
+    }
 }
