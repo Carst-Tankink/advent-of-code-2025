@@ -2,6 +2,7 @@ package day6
 
 import util.Helpers.Companion.transpose
 import util.Solution
+import kotlin.text.split
 
 sealed interface Homework
 data class Number(val value: Long) : Homework
@@ -10,20 +11,21 @@ enum class Operator : Homework {
     MULTIPLY
 }
 
-class TrashCompactor(fileName: String?) : Solution<List<Homework>, Long>(fileName) {
-    override fun parse(line: String): List<Homework> {
-        return line.split(" ").filter(String::isNotBlank)
-            .map {
-                when (it) {
-                    "+" -> Operator.PLUS
-                    "*" -> Operator.MULTIPLY
-                    else -> Number(it.toLong())
-                }
-            }
-    }
+class TrashCompactor(fileName: String?) : Solution<String, Long>(fileName) {
+    override fun parse(line: String): String = line
 
-    override fun solve1(data: List<List<Homework>>): Long {
-        return data
+    override fun solve1(data: List<String>): Long {
+        val assignments: List<List<Homework>> = data.map { line ->
+            line.split(" ").filter(String::isNotBlank)
+                .map {
+                    when (it) {
+                        "+" -> Operator.PLUS
+                        "*" -> Operator.MULTIPLY
+                        else -> Number(it.toLong())
+                    }
+                }
+        }
+        return assignments
             .transpose()
             .sumOf { list ->
                 val operator = list.filterIsInstance<Operator>().first()
@@ -35,7 +37,7 @@ class TrashCompactor(fileName: String?) : Solution<List<Homework>, Long>(fileNam
             }
     }
 
-    override fun solve2(data: List<List<Homework>>): Long {
+    override fun solve2(data: List<String>): Long {
         TODO("Not yet implemented")
     }
 }

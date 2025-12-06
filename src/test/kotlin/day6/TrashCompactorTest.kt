@@ -11,4 +11,9 @@ class TrashCompactorTest {
     fun sample1star1() {
         assertEquals(4277556, sample1.star1())
     }
+
+    @Test
+    fun sample1star2() {
+        assertEquals(3263827, sample1.star2())
+    }
 }
