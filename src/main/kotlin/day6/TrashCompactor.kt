@@ -2,7 +2,6 @@ package day6
 
 import util.Helpers.Companion.transpose
 import util.Solution
-import kotlin.text.split
 
 sealed interface Homework
 data class Number(val value: Long) : Homework
@@ -38,6 +37,40 @@ class TrashCompactor(fileName: String?) : Solution<String, Long>(fileName) {
     }
 
     override fun solve2(data: List<String>): Long {
-        TODO("Not yet implemented")
+        val transposed = data.map { line -> line.toList() }.transpose()
+        tailrec fun findProblems(
+            lists: List<List<Char>>,
+            acc: List<Pair<Operator, List<Long>>>,
+            current: Pair<Operator, List<Long>>?
+        ): List<Pair<Operator, List<Long>>> {
+            return if (lists.isEmpty()) acc + current!! else {
+                val head = lists.first()
+                val tail = lists.drop(1)
+                if (head.joinToString("").isBlank()) {
+                    findProblems(tail, acc + current!!, null)
+                } else {
+                    val number = head
+                        .dropWhile { it == ' ' }
+                        .takeWhile { it.isDigit() }
+                        .joinToString("")
+                        .toLong()
+                    val last = head.last()
+                    when (last) {
+                        '*' -> findProblems(tail, acc, Pair(Operator.MULTIPLY, listOf(number)))
+                        '+' -> findProblems(tail, acc, Pair(Operator.PLUS, listOf(number)))
+                        else -> findProblems(tail, acc, Pair(current!!.first, current!!.second + listOf(number)))
+                    }
+                }
+            }
+        }
+
+        val problems = findProblems(transposed, emptyList(), null)
+
+        return problems.sumOf { (operator, numbers) ->
+            when (operator) {
+                Operator.PLUS -> numbers.sum()
+                Operator.MULTIPLY -> numbers.fold(1L) { acc, number -> acc * number }
+            }
+        }
     }
 }
