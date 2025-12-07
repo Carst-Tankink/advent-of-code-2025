@@ -10,4 +10,9 @@ class LaboratoriesTest {
     fun sample1star1() {
         assertEquals(21, sample1.star1())
     }
+    
+    @Test
+    fun sample1star2() {
+        assertEquals(40, sample1.star2())
+    }
 }
