@@ -60,11 +60,18 @@ class Laboratories(fileName: String?) : Solution<List<POI>, Long>(fileName) {
             .drop(1)
             .filter { it.isNotEmpty() }
             .fold(startPosition) { positions, splitters ->
-                val newPositions = positions.flatMap { (p, c) -> if (p in splitters) listOf( p-1 to c, p+1 to c) else listOf(p to c) }
-                newPositions.groupingBy { it.first}.reduce { key, (p1, c1), (p2, c2)->  p1 to c1 +  c2 }.values.toList()
-                
+                positions.flatMap { (p, c) ->
+                    if (p in splitters) listOf(
+                        p - 1 to c,
+                        p + 1 to c
+                    ) else listOf(p to c)
+                }
+                    .groupingBy { it.first }
+                    .reduce { _, (p1, c1), (_, c2) -> p1 to c1 + c2 }
+                    .values
+                    .toList()
             }.sumOf { it.second }
-                
+
     }
 
 }
